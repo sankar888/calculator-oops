@@ -1,0 +1,4 @@
+function BaseButtonModel(){
+
+	this.value = '';
+};

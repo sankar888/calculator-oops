@@ -1,0 +1,5 @@
+function CalculatorModel(){
+
+	this.expression = [];
+	
+}

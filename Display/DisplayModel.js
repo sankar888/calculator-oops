@@ -1,0 +1,3 @@
+function DisplayModel(){
+	this.value = '';
+}
