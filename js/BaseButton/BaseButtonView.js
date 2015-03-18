@@ -13,6 +13,7 @@ BaseButtonView.prototype = {
 				this[key] = config[key];
 			}
 		}
+		console.log("checking class "+this.class);
 	},
 
 	buildObjects : function(){

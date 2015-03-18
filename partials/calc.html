@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../css/style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src = "../js/BaseButton/BaseButtonModel.js"></script>
+		<script src = "../js/BaseButton/BaseButtonView.js"></script>
+		<script src = "../js/BaseButton/BaseButtonController.js"></script>
+
+		<script src = "../js/NumberButton/NumberButtonModel.js"></script>
+		<script src = "../js/NumberButton/NumberButtonView.js"></script>
+		<script src = "../js/NumberButton/NumberButtonController.js"></script>
+
+		<script src = "../js/OperatorButton/OperatorButtonModel.js"></script>
+		<script src = "../js/OperatorButton/OperatorButtonView.js"></script>
+		<script src = "../js/OperatorButton/OperatorButtonController.js"></script>
+
+		<script src = "../js/Display/DisplayModel.js"></script>
+		<script src = "../js/Display/DisplayView.js"></script>
+		<script src = "../js/Display/DisplayController.js"></script>
+
+		<script src = "../js/Calculator/CalculatorModel.js"></script>
+		<script src = "../js/Calculator/CalculatorView.js"></script>
+		<script src = "../js/Calculator/CalculatorController.js"></script>
+
+		<script src = "../js/EventBus.js"></script>
+		<script src = "../js/Calculator.js"></script>
+
+	</head>
+	<body>
+		<!--<div class="wrapper">
+			<section class="display">
+				<input id="display" type="text" value="" disabled>
+			</section>
+			<section id="keypad">		
+				<input type = "button" class="sep keys" value="(">
+				<input type = "button" class="sep keys" value=")">
+				<input type = "button" class="sep keys" value="^">
+				<input type = "button" id="del" class="sep key-del" value="C">
+
+				<input type = "button" class="keys" value="7">
+				<input type = "button" class="keys" value="8">
+				<input type = "button" class="keys" value="9">
+				<input type = "button" class="sep keys" value="/">
+
+				<input type = "button" class="keys" value="4">
+				<input type = "button" class="keys" value="5">
+				<input type = "button" class="keys" value="6">
+				<input type = "button" class="sep keys" value="*">
+
+				<input type = "button" class="keys" value="1">
+				<input type = "button" class="keys" value="2">
+				<input type = "button" class="keys" value="3">
+				<input type = "button" class="sep keys" value="-">
+
+				<input type = "button" class="keys" value="0">
+				<input type = "button" class="keys" value=".">
+				<input type = "button" id="submit" class="key-submit" value="=">
+				<input type = "button" class="sep keys" value="+">
+
+				<span class="clear"></span>	
+			</section>
+		</div> -->
+		<script>
+			var calc = new Calculator({
+				numberClass : 'keys',
+				operatorClass : 'keys sep',
+				displayClass : 'display',
+				calcClass : 'wrapper'
+			});
+			calc.show();
+		</script>
+	</body>
+</html>

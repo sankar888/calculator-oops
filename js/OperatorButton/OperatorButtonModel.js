@@ -1,6 +1,6 @@
 OperatorButtonModel = function(){
 	
-	BaseButton.model.call(this);
+	BaseButtonModel.call(this);
 }
 
 OperatorButtonModel.prototype = Object.create(BaseButtonModel.prototype);

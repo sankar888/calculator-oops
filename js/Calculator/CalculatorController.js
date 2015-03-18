@@ -1,4 +1,4 @@
-Function CalculatorController(model, view, dep){
+function CalculatorController(model, view, dep){
 
 	this.model = model;
 	this.view = view;
@@ -20,11 +20,13 @@ CalculatorController.prototype = {
 			'N' : numberArr.concat(this.operators).concat([')','.']), // N- Number
 			'R' : numberArr.concat(this.operators).concat(['(','.']) // R - Result State
 		};
-		this.initiallyExpected = numberArr.concat(['.','(','-']); // Initially expected values
+		this.initiallyExpected = numberArr.concat(['.','(']); // Initially expected values
 		
 		this.lastToken = '';
 		this.isResult = false;
 		this.expected = this.initiallyExpected;
+		this.dep.eventBus.observe("NumberButtonClicked",this.processInput,this);
+		this.dep.eventBus.observe("OperatorButtonClicked",this.processInput,this);
 	},
 
 	isOperator : function(key){
@@ -107,10 +109,11 @@ CalculatorController.prototype = {
 	formExpression : function(expression){
 		var temp = [],
 			op = [],
-			key;
+			key,
+			lastToken;
 		for(var i=0; i<expression.length; i++){
 			key = expression[i];
-			if(key==='.' || window.isFinite(key)){
+			if((lastToken === '(' && key === '-') || key==='.' || window.isFinite(key)){
 				temp.push(key);
 			}else{
 				if(temp.length > 0){
@@ -119,6 +122,7 @@ CalculatorController.prototype = {
 				}
 				op.push(key);
 			}
+			lastToken = key;
 		}
 		if(temp.length > 0){
 			op.push(this.arrToString(temp));
@@ -129,21 +133,26 @@ CalculatorController.prototype = {
 	push : function(key){
 		this.model.push(key);
 		this.lastToken = key;
-		refreshExpected(key);
+		this.refreshExpected(key);
 		this.dep.display.append(key);
 	},
 
 	pop : function(){
 		this.model.pop();
 		this.lastToken = this.model.expression[this.model.expression.length - 1] || '';
-		refreshExpected(this.lastToken);
-		this.dep.display.clearLast();
+		this.refreshExpected(this.lastToken);
+		if(this.isResult){
+			this.dep.display.clear();
+		}
+		else{
+			this.dep.display.clearLast();
+		}
 	},
 
 	clear : function(){
 		this.model.clear();
 		this.lastToken = '';
-		refreshExpected();
+		this.refreshExpected();
 		this.dep.display.clear();
 	},
 
@@ -287,29 +296,26 @@ CalculatorController.prototype = {
 		return this.evaluateRPN(rpn);
 	},
 
-	//del function handles the delete operation from memory , underlying logic behind del key
-	del : function(){
-		if(this.isResult){
-			this.dep.display.clear();
-			this.pop();
-		}
-		else{
-			this.display.clearLast();
-			this.pop();
-		}
-	},
-
 	//validate the each keyed in token and adds it the expression memory , uses validator to validate
 	processInput : function(event){
 
-		var key = event.target.srcElement.value;
+		var key = event.target.getAttribute('value');
+		if(key === 'C'){
+			this.pop();
+			return 0;
+		}
+		if(key === '='){
+			this.processExpression();
+			return 0;
+		}
 		// if the keyed in token is not valid do not add it to the memory
 		if(!this.validForProcessing(key)){
 			return 0;
 		}
 
 		// habdles the token after result state
-		if(this.isResult && this.isClearResult() || this.isContinousOperator(key)){
+		if((this.isResult && this.isClearResult(key)) || this.isContinousOperator(key)){
+			console.log("into clear");
 			this.pop();
 		}
 
@@ -323,7 +329,7 @@ CalculatorController.prototype = {
 		var result,
 			expression = this.model.expression;
 		//checking the validity for the expression
-		if(expression.length === 0 || this.validator.isBracesMisMatch(expression)){
+		if(expression.length === 0 || this.isBracesMisMatch(expression)){
 			console.log('braces mismatch');
 			return 0;
 		}

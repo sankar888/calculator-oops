@@ -9,10 +9,10 @@ OperatorButtonController.prototype = Object.create(BaseButtonController.prototyp
 OperatorButtonController.prototype.constructor = OperatorButtonController;
 
 OperatorButtonController.prototype.init = function(){
-		for(var i = 0; i < this.view.objects.length; i++){
-			this.view.elements[i].onclick = function(e){
+		for(var i = 0; i < this.view.elements.length; i++){
+			this.view.elements[i].onclick = (function(e){
 				//emit functions
-				console.log(e.target.value+"clicked");
-			};
+				this.dep['eventBus'].emit('OperatorButtonClicked', e);
+			}).bind(this);
 		}
 };
